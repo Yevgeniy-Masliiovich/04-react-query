@@ -6,11 +6,15 @@ const apiKey = import.meta.env.VITE_TMDB_TOKEN;
 
 interface FetchMoviesResponse {
   results: Movie[];
+  total_pages: number;
 }
 
-export const fetchMovies = async (query: string): Promise<Movie[]> => {
+export const fetchMovies = async (
+  query: string,
+  page: number,
+): Promise<FetchMoviesResponse> => {
   const config = {
-    params: { query },
+    params: { query, page },
     headers: {
       Authorization: `Bearer ${apiKey}`,
     },
@@ -18,5 +22,5 @@ export const fetchMovies = async (query: string): Promise<Movie[]> => {
 
   const response = await axios.get<FetchMoviesResponse>(BASE_URL, config);
 
-  return response.data.results;
+  return response.data;
 };
